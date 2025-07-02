@@ -41,6 +41,54 @@ paths:
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/CreateChatCompletionStreamResponse'
+        '400':
+          description: "Bad request. The request is invalid or missing required parameters."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: "Unauthorized. The provided API key is invalid or missing."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: "Forbidden. The user does not have permission to access the resource."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: "Not Found. The requested resource could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: "Too Many Requests. The rate limit has been exceeded."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. An error occurred on the server."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '502':
+          description: "Bad Gateway. Invalid response from the backend server."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: "Service Unavailable. The server is temporarily unavailable."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create chat completion
         group: chat
@@ -3016,6 +3064,24 @@ components:
           {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"gpt-4o-mini",
           "system_fingerprint": "fp_44709d6fcb",
           "choices":[{"index":0,"delta":{},"logprobs":null,"finish_reason":"stop"}]}
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              description: "A human-readable message describing the error."
+            type:
+              type: string
+              description: "The error type, e.g., `invalid_request_error`, `rate_limit_error`, etc."
+            param:
+              type: string
+              description: "The parameter that caused the error, if applicable."
+            code:
+              type: string
+              description: "A machine-readable error code (e.g., `invalid_request_error`)"
   securitySchemes:
     ApiKeyAuth:
       type: http
